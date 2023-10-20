@@ -45,6 +45,7 @@ insert into funcionarios(nomeFunc, login, senha) values ("Fellipe Coelho", "fell
 /*Ler/Buscar as informações da tabela funcionários */
 select * from funcionarios;
 
+
 /*UPDATE*/
 /* Atualizar o campo login na tabela funcionários especificando o id */
 update funcionarios set login = 'fellipecoelho' where idFunc = 7;
@@ -52,3 +53,23 @@ update funcionarios set cargo = 'Gerência' where idFunc = 4;
 
 /* Excluir a tabela do banco */
 drop table funcionarios;
+
+/* Adicionar o campo email à tabela funcionarios */
+alter table funcionarios add column email varchar(50);
+
+/*Modificar o campo email para que se torne obrigatório, ou seja, não nulo (not null) */
+alter table funcionarios modify column email varchar (50) not null;
+
+/* Excluir um campo da tabela */
+alter table funcionarios drop column email;
+
+/*Reposicionar o campo email para que ele fique após o campo login */
+alter table funcionarios modify column email varchar(50) not null after login;
+
+update funcionarios set email = 'fellipecoelho@senacsp.edu.br' where idFunc = 7;
+update funcionarios set email = 'pamellapereto@senacsp.edu.br' where idFunc = 6;
+update funcionarios set email = 'lauralopes@senacsp.edu.br' where idFunc = 5;
+update funcionarios set email = 'victoriacardoso@senacsp.edu.br' where idFunc = 4;
+update funcionarios set email = 'brenosilva@senacsp.edu.br' where idFunc = 3;
+
+select login as Login, senha from funcionarios where login = "admin" and senha = md5("admin");
