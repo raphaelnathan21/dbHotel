@@ -41,6 +41,9 @@ insert into funcionarios(nomeFunc, login, senha, cargo) values ("Breno Silva", "
 insert into funcionarios(nomeFunc, login, senha, cargo) values ("Victoria Cardoso", "victoriacardoso", md5("123@senac"), "RH");
 insert into funcionarios(nomeFunc, login, senha) values ("Laura Lopes", "lauralopes", md5("123@senac"));
 insert into funcionarios(nomeFunc, login, senha) values ("Fellipe Coelho", "fellipe", md5("123@senac"));
+insert into funcionarios(nomeFunc, login, senha, cargo, email) values ("José", "parabensze", md5("123@senac"), "Gerência", "joseroberto@gmail.com");
+insert into funcionarios(nomeFunc, login, senha, cargo, email) values ("Pamella Pereto", "pamellapereto", md5("123@senac"), "Gerência", "pamellapereto@gmail.com");
+insert into funcionarios(nomeFunc, login, senha, cargo, email) values ("Pedro Rodrigues", "pedrorodrigues", md5("123@senac"), "Gerência", "pedrorodrigues@gmail.com");
 /*READ*/
 /*Ler/Buscar as informações da tabela funcionários */
 select * from funcionarios;
@@ -72,4 +75,46 @@ update funcionarios set email = 'lauralopes@senacsp.edu.br' where idFunc = 5;
 update funcionarios set email = 'victoriacardoso@senacsp.edu.br' where idFunc = 4;
 update funcionarios set email = 'brenosilva@senacsp.edu.br' where idFunc = 3;
 
+/* Buscar o login e a senha da tabela funcionarios em que login seja admin e senha seja admin */
 select login as Login, senha from funcionarios where login = "admin" and senha = md5("admin");
+
+/* DELETE */
+delete from funcionarios where idFunc = 6;
+
+/* Buscar o ID e o nome do funcionário da tabela funcionarios ordenando o nome alfabeticamente (ascendente, de A a Z) */
+select idFunc as ID_Funcionario, nomeFunc as Nome_Funcionarios from funcionarios order by nomeFunc asc;
+
+/* Buscar o ID e o nome do funcionário da tabela funcionarios ordenando o nome alfabeticamente (descendente, de Z a A) */
+select idFunc as ID_Funcionario, nomeFunc as Nome_Funcionarios from funcionarios order by nomeFunc desc;
+
+select idFunc as ID_Funcionario, nomeFunc as Nome_Funcionarios, cargo as Cargo_Funcionario from funcionarios order by idFunc desc;
+
+/* Buscar os campos ID com apelido ID_Funcionario, nomeFunc com o apelido Nome_Funcionario e cargo com o apelido Cargo_Funcionario da tabela funcionarios onde cargo seja diferente de nulo e ordenado de forma ascendente o ID (de maior para o menor) 
+<> ESTE SINAL SIGNIFICA DIFERENTE
+*/
+select idFunc as ID_Funcionario, nomeFunc as Nome_Funcionario, cargo as Cargo_Funcionario from funcionarios where cargo <> 'null' order by idFunc desc;
+
+select idFunc as ID_Funcionario, nomeFunc as Nome_Funcionarios, cargo as Cargo_Funcionario from funcionarios order by idFunc desc;
+
+/* Buscar todos os campos dos funcionários que tenham o cargo de Gerência, ordenando alfabeticamente */
+select * from funcionarios where cargo = 'Gerência' order by nomeFunc asc;
+
+create table quartos (
+	idQuarto int primary key auto_increment, 
+    andar varchar(10) not null, 
+    tipoQuarto varchar(50) not null,
+    ocupacaoMax int not null,
+    situacao char(3) not null,
+    nome varchar(50) not null,
+    descricao text,
+    preco decimal(10,2) not null,
+    tipoCama varchar(20),
+    varanda char(3)
+    );
+    
+    describe quartos;
+    
+    drop table quartos;
+    
+    alter table quartos add column numeroQuarto varchar(10) not null after andar;
+
