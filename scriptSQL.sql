@@ -114,7 +114,54 @@ create table quartos (
     
     describe quartos;
     
+    
     drop table quartos;
     
     alter table quartos add column numeroQuarto varchar(10) not null after andar;
+    
+    alter table quartos add column cadeDaManha char(3) not null after preco;
+    
+    alter table quartos add column foto varchar(255) not null after descricao;
+    
+    alter table quartos change cadeDaManha cafeDaManha varchar(3) not null;
+
+insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, preco, tipoCama, varanda) values ("5º", "505", "Superior Premier", 3, "não", "Familiar", "O quarto de 26m² com piso frio, com varanda - vista bairro. Oferece ar condicionado individual, TV LCD 42’’, wi-fi grátis, cofre digital, frigobar abastecido e banheiro com secador de cabelo e amenities e mesa de trabalho.", 750.90, "Queen", "sim");
+
+insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, preco, tipoCama, varanda) values ("5º", "505", "Superior Premier Twin", 3, "não", "Familiar", " Podemos acomodar até 2 pessoas conforme disponibilidade em apartamento duplo twin.
+A 1º criança na mesma cama que os pais é cortesia até 6 anos.", 950.90, "King", "sim");
+
+insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, preco, tipoCama, varanda) values ("4º", "409", "Quarto de Solteiro", 2, "sim", "Junior", "Quarto com uma cama de casal
+Os quartos contam com TV de tela plana, Frigobar, Wi-fi, e Ar-Condicionado. Para sua comodidade, são fornecidos produtos de banho de cortesia e secador de cabelo.", 550.90, "Solteiro tradicional", "sim");
+
+select * from quartos;
+
+update quartos set cafeDaManha = "sim" where idQuarto = 1;
+
+update quartos set foto = "https://pousadaportomare.com.br/wp-content/uploads/2022/08/tipos-de-quarto.jpg" where idQuarto = 1;
+
+select * from quartos where situacao = 'nao';
+
+select * from quartos where situacao = 'nao' and cafeDaManha = 'sim';
+
+select * from quartos where varanda = 'sim' and cafeDaManha = 'sim' and situacao = 'nao';
+
+select * from quartos where situacao = 'nao' and preco < 700;
+
+select * from quartos order by preco desc;
+
+create table clientes (
+	idClientes int primary key auto_increment,
+    nomeCompleto varchar(100) not null,
+    cpf char(14) not null unique,
+    rg char(12) not null unique,
+    email varchar(15) not null,
+    numeroCartao varchar(20) not null,
+    nomeTitular varchar(100) not null,
+    validade date not null, 
+    cvv char(3) not null,
+    checkin datetime not null,
+    checkout datetime not null,
+    idQuarto int not null,
+    foreign key (idQuarto) references quartos (idQuarto)
+);
 
