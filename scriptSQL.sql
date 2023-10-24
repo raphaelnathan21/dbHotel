@@ -124,6 +124,8 @@ create table quartos (
     alter table quartos add column foto varchar(255) not null after descricao;
     
     alter table quartos change cadeDaManha cafeDaManha varchar(3) not null;
+    
+ update quartos set numeroQuarto = "506" where idQuarto = 2;
 
 insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, preco, tipoCama, varanda) values ("5º", "505", "Superior Premier", 3, "não", "Familiar", "O quarto de 26m² com piso frio, com varanda - vista bairro. Oferece ar condicionado individual, TV LCD 42’’, wi-fi grátis, cofre digital, frigobar abastecido e banheiro com secador de cabelo e amenities e mesa de trabalho.", 750.90, "Queen", "sim");
 
@@ -154,7 +156,8 @@ create table clientes (
     nomeCompleto varchar(100) not null,
     cpf char(14) not null unique,
     rg char(12) not null unique,
-    email varchar(15) not null,
+    email varchar(50) not null,
+    celular varchar(20) not null,
     numeroCartao varchar(20) not null,
     nomeTitular varchar(100) not null,
     validade date not null, 
@@ -164,4 +167,31 @@ create table clientes (
     idQuarto int not null,
     foreign key (idQuarto) references quartos (idQuarto)
 );
+
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values ("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "José de Assis", "2025-03-24", "452", "2023-11-02 14:00:00", "2023-11-05 12:00:00", 1);
+
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values ("Pedroca Mussolini", "111.222.333-04", "11.222.333-4", "pedromussolini@gmail.com", "(96) 99999-9999", "1111 2222 3333 4444", "Pedro Mussolini", "2045-03-24", "123", "2023-11-02 14:00:00", "2023-11-05 12:00:00", 2);
+
+drop table clientes;
+
+
+select * from clientes;
+
+/* Buscar TODAS AS INFORMAÇÕES da tabela quartos que está vinculada à tabela clientes pelo campo idQuarto */
+
+select *
+from quartos inner join clientes
+on quartos.idQuarto = clientes.idQuarto;
+
+/* Buscar o nome completo e o celular do cliente que alugou o quarto de número 505, pois a tabela está vinculada à tabela clientes pelo idQuarto */
+select clientes.nomeCompleto,
+clientes.celular
+from quartos inner join clientes
+on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 505;
+
+/*Buscar o nome completo e data/horário do checkout do cliente que alugou o quarto de número 505 */
+select clientes.nomeCompleto as Nome, date_format(clientes.checkout, '%d/%m/%Y - %H:%i') from quartos inner join clientes on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 505;
+
+/* 
+
 
