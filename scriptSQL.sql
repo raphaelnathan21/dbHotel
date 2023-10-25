@@ -163,14 +163,12 @@ create table clientes (
     validade date not null, 
     cvv char(3) not null,
     checkin datetime not null,
-    checkout datetime not null,
-    idQuarto int not null,
-    foreign key (idQuarto) references quartos (idQuarto)
+    checkout datetime not null
 );
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values ("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "José de Assis", "2025-03-24", "452", "2023-11-02 14:00:00", "2023-11-05 12:00:00", 1);
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values ("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "José de Assis", "2025-03-24", "452", "2023-11-02 14:00:00", "2023-11-05 12:00:00");
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values ("Pedroca Mussolini", "111.222.333-04", "11.222.333-4", "pedromussolini@gmail.com", "(96) 99999-9999", "1111 2222 3333 4444", "Pedro Mussolini", "2045-03-24", "123", "2023-11-02 14:00:00", "2023-11-05 12:00:00", 2);
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values ("Pedroca Mussolini", "111.222.333-04", "11.222.333-4", "pedromussolini@gmail.com", "(96) 99999-9999", "1111 2222 3333 4444", "Pedro Mussolini", "2045-03-24", "123", "2023-11-02 14:00:00", "2023-11-05 12:00:00");
 
 drop table clientes;
 
@@ -192,6 +190,35 @@ on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 505;
 /*Buscar o nome completo e data/horário do checkout do cliente que alugou o quarto de número 505 */
 select clientes.nomeCompleto as Nome, date_format(clientes.checkout, '%d/%m/%Y - %H:%i') from quartos inner join clientes on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 505;
 
-/* 
+describe clientes;
+
+/*dataPedido timestamp default current_timestamp significa que a data do pedido será a mesma do sistema, ou seja, a data atual 
+statusPedido significa que a situação do pedido será uma das seguintes opções: Pendente, Finalizado, Cancelado */
+
+create table pedido (
+	idPedido int primary key auto_increment,
+    dataPedido timestamp default current_timestamp,
+    statusPedido enum("Pendente", "Finalizado", "Cancelado") not null,
+    idClientes int not null,
+    foreign key (idClientes) references clientes(idClientes)
+);
+
+/*Abertura de pedidos */
+insert into pedido (statusPedido, idClientes) values ("Pendente", 1);
+insert into pedido (statusPedido, idClientes) values ("Finalizado", 2);
+
+select * from pedido;
+
+create table reservas (
+	idReserva int primary key auto_increment,
+    idPedido int not null,
+    idQuarto int not null,
+    foreign key (idPedido) references pedido(idPedido),
+    foreign key (idQuarto) references quartos(idQuarto)
+    );
+    
+drop table reservas;
+    
+
 
 
