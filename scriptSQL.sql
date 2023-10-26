@@ -157,18 +157,12 @@ create table clientes (
     cpf char(14) not null unique,
     rg char(12) not null unique,
     email varchar(50) not null,
-    celular varchar(20) not null,
-    numeroCartao varchar(20) not null,
-    nomeTitular varchar(100) not null,
-    validade date not null, 
-    cvv char(3) not null,
-    checkin datetime not null,
-    checkout datetime not null
+    celular varchar(20) not null
 );
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values ("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "José de Assis", "2025-03-24", "452", "2023-11-02 14:00:00", "2023-11-05 12:00:00");
+insert into clientes (nomeCompleto, cpf, rg, email, celular) values ("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803");
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values ("Pedroca Mussolini", "111.222.333-04", "11.222.333-4", "pedromussolini@gmail.com", "(96) 99999-9999", "1111 2222 3333 4444", "Pedro Mussolini", "2045-03-24", "123", "2023-11-02 14:00:00", "2023-11-05 12:00:00");
+insert into clientes (nomeCompleto, cpf, rg, email, celular) values ("Pedroca Mussolini", "111.222.333-04", "11.222.333-4", "pedromussolini@gmail.com", "(96) 99999-9999");
 
 drop table clientes;
 
@@ -218,7 +212,22 @@ create table reservas (
     );
     
 drop table reservas;
-    
 
+select * from pedido inner join clientes on pedido.idClientes = clientes.idClientes;
+
+select * from pedido;
+
+select * from reservas;
+
+insert into reservas (idPedido, idQuarto, checkin, checkout) values (1, 1, "2023-11-02 14:00:00", "2023-11-05 12:00:00");
+insert into reservas (idPedido, idQuarto, checkin, checkout) values (1, 2, "2023-11-02 14:00:00", "2023-11-05 12:00:00");
+
+alter table reservas add column checkin datetime not null;
+alter table reservas add column checkout datetime not null;
+describe reservas;
+
+select * from reservas;
+
+select reservas.idReserva, pedido.idPedido, quartos.idQuarto, quartos.nome, quartos.andar, quartos.numeroQuarto from (reservas inner join pedido on reservas.idPedido = pedido.idPedido) inner join quartos on reservas.idQuarto = quartos.idQuarto;
 
 
