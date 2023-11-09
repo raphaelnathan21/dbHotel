@@ -103,6 +103,28 @@ describe reservas;
     
 insert into reservas (idPedido, idQuarto, checkin, checkout) values (1, 1, "2023-11-02 14:00:00", "2023-11-05 12:00:00");
 insert into reservas (idPedido, idQuarto, checkin, checkout) values (1, 2, "2023-11-02 14:00:00", "2023-11-05 12:00:00");
+insert into reservas (idPedido, idQuarto, checkin, checkout) values (2, 3,  "2023-11-02 14:00:00", "2023-11-05 12:00:00");
 
 select * from reservas;
-select reservas.idReserva, pedido.idPedido, quartos.idQuarto, quartos.nome, quartos.andar, quartos.numeroQuarto from (reservas inner join pedido on reservas.idPedido = pedido.idPedido) inner join quartos on reservas.idQuarto = quartos.idQuarto;
+
+select clientes.nomeCompleto, clientes.cpf, clientes.email, pedido.idPedido, pedido.dataPedido, 
+quartos.nome, quartos.andar, quartos.numeroQuarto, quartos.preco, reservas.checkin, reservas.checkout from 
+clientes inner join pedido on clientes.idClientes = pedido.idClientes inner join
+reservas on reservas.idPedido = pedido.idPedido inner join quartos
+on reservas.idQuarto = quartos.idQuarto;
+
+select clientes.nomeCompleto, clientes.cpf, clientes.email, pedido.idPedido, pedido.dataPedido,  quartos.tipoQuarto, 
+quartos.nome, quartos.andar, quartos.numeroQuarto, quartos.preco, reservas.checkin, reservas.checkout from
+clientes inner join pedido on clientes.idClientes = pedido.idClientes inner join 
+reservas on reservas.idPedido = pedido.idPedido inner join quartos
+on reservas.idQuarto = quartos.idQuarto;
+
+select sum(quartos.preco) as Total from reservas inner join quartos on reservas.idQuarto = quartos.idQuarto where idPedido = 2;
+
+describe quartos;
+describe clientes;
+describe pedidos;
+
+select * from clientes;
+select * from pedido;
+select *from quartos;
