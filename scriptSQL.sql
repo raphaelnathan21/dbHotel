@@ -40,7 +40,7 @@ create table quartos (
     numeroQuarto varchar(10) not null,
     tipoQuarto varchar(50) not null,
     ocupacaoMax int not null,
-    situacao char(3) not null,
+    disponibilidade char(3) not null,
     nome varchar(50) not null,
     descricao text,
     foto varchar(255) not null,
@@ -128,3 +128,25 @@ describe pedidos;
 select * from clientes;
 select * from pedido;
 select *from quartos;
+select * from reservas;
+
+update reservas inner join quartos on reservas.idQuarto = quartos.idQuarto
+set quartos.disponibilidade = "sim" 
+where reservas.checkout < current_timestamp();
+
+/* Cliente Pedroca Mussolini - idPedido 2
+Quarto reservado: Quarto de Solteiro (4° andar, número 409, preço/diária: R$ 550,90
+Check-in: 27/11/2023 às 10h
+Check-out: 08/12/2023 às 10h
+*/
+
+select clientes.nomeCompleto, quartos.andar, quartos.numeroQuarto, reservas.checkout from
+clientes inner join pedido on clientes.idClientes = pedido.idClientes inner join
+reservas on reservas.idPedido = pedido.idPedido inner join quartos
+on reservas.idQuarto = quartos.idQuarto where reservas.checkout <= current_timestamp();
+
+select clientes.nomeCompleto, quartos.andar, quartos.numeroQuarto,  
+date_format(reservas.checkout, '%d%m%Y') as checkout, datediff(reservas.checkout, curdate()) as dias_restantes
+from clientes inner join pedido on clientes.idClientes = pedido.idClientes inner join
+reservas on reservas.idPedido = pedido.idPedido inner join quartos 
+on reservas.idQuarto = quartos.idQuarto where reservas.checkout > current_timestamp();
